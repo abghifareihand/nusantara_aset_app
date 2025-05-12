@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:nusantara_aset_app/core/database/hive_helper.dart';
 import 'package:nusantara_aset_app/features/main_menu_view.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -16,6 +17,12 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       title: 'Nusantara Aset',
+      localizationsDelegates: [
+        GlobalMaterialLocalizations.delegate,
+        GlobalWidgetsLocalizations.delegate,
+        GlobalCupertinoLocalizations.delegate,
+      ],
+      supportedLocales: [Locale('id')],
       theme: ThemeData(useMaterial3: false),
       home: MainMenuView(),
     );

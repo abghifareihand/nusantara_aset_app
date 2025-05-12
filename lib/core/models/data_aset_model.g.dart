@@ -8,7 +8,7 @@ part of 'data_aset_model.dart';
 
 class DataAsetModelAdapter extends TypeAdapter<DataAsetModel> {
   @override
-  final int typeId = 1;
+  final int typeId = 3;
 
   @override
   DataAsetModel read(BinaryReader reader) {
@@ -19,22 +19,25 @@ class DataAsetModelAdapter extends TypeAdapter<DataAsetModel> {
     return DataAsetModel(
       id: fields[0] as String,
       name: fields[1] as String,
-      image: fields[2] as String,
-      createdAt: fields[3] as String,
+      location: fields[2] as String,
+      image: fields[3] as String,
+      createdAt: fields[4] as DateTime,
     );
   }
 
   @override
   void write(BinaryWriter writer, DataAsetModel obj) {
     writer
-      ..writeByte(4)
+      ..writeByte(5)
       ..writeByte(0)
       ..write(obj.id)
       ..writeByte(1)
       ..write(obj.name)
       ..writeByte(2)
-      ..write(obj.image)
+      ..write(obj.location)
       ..writeByte(3)
+      ..write(obj.image)
+      ..writeByte(4)
       ..write(obj.createdAt);
   }
 

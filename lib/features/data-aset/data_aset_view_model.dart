@@ -1,5 +1,4 @@
 import 'dart:async';
-
 import 'package:hive/hive.dart';
 import 'package:nusantara_aset_app/core/database/file_helper.dart';
 import 'package:nusantara_aset_app/core/database/hive_helper.dart';
@@ -8,19 +7,18 @@ import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:nusantara_aset_app/core/base/base_view_model.dart';
 import 'dart:io';
-import 'package:intl/intl.dart';
+import 'package:path/path.dart' as path;
 
 class DataAsetViewModel extends BaseViewModel {
   final TextEditingController nameController = TextEditingController();
-  final TextEditingController descriptionController = TextEditingController();
+  final TextEditingController locationController = TextEditingController();
   final TextEditingController searchController = TextEditingController();
+  final FocusNode searchFocusNode = FocusNode();
 
   File? imageFile;
-  String? imageName;
-  Timer? _debounce;
 
   List<DataAsetModel> dataAsetList = [];
-  List<DataAsetModel> searchResult = [];
+  List<DataAsetModel> dataAsetResult = [];
 
   @override
   Future<void> initModel() async {
@@ -30,7 +28,9 @@ class DataAsetViewModel extends BaseViewModel {
   }
 
   bool get isFormValid {
-    return nameController.text.isNotEmpty && imageFile != null;
+    return nameController.text.isNotEmpty &&
+        locationController.text.isNotEmpty &&
+        imageFile != null;
   }
 
   void updateName(String value) {
@@ -38,86 +38,57 @@ class DataAsetViewModel extends BaseViewModel {
     notifyListeners();
   }
 
-  void updateDescription(String value) {
-    descriptionController.text = value;
+  void updateLocation(String value) {
+    locationController.text = value;
     notifyListeners();
   }
 
-  Future<void> pickImage() async {
+  Future<File?> pickImage() async {
     final ImagePicker picker = ImagePicker();
     final XFile? image = await picker.pickImage(source: ImageSource.gallery);
     if (image != null) {
       imageFile = File(image.path);
-      imageName = image.name;
       notifyListeners();
     }
+    return null;
   }
 
-  Future<void> cameraImage() async {
+  Future<File?> cameraImage() async {
     final ImagePicker picker = ImagePicker();
     final XFile? image = await picker.pickImage(source: ImageSource.camera);
     if (image != null) {
       imageFile = File(image.path);
-      imageName = image.name;
       notifyListeners();
     }
+    return null;
   }
 
-  // void searchDataAset(String query) {
-  //   if (query.isEmpty) {
-  //     searchResult = [];
-  //     notifyListeners();
-  //     return;
-  //   }
-
-  //   searchResult =
-  //       dataAsetList.where((aset) {
-  //         final nameLower = aset.name.toLowerCase();
-  //         final descLower = aset.description.toLowerCase();
-  //         final searchLower = query.toLowerCase();
-
-  //         return nameLower.contains(searchLower) || descLower.contains(searchLower);
-  //       }).toList();
-
-  //   notifyListeners();
-  // }
-
-  // Fungsi debouncer
   void searchDataAset(String query) {
-    // Batalkan timer lama jika ada
-    if (_debounce?.isActive ?? false) _debounce?.cancel();
-
-    // Set timer untuk mencari setelah 1 detik (bisa disesuaikan)
-    _debounce = Timer(const Duration(milliseconds: 1000), () {
-      if (query.isEmpty) {
-        searchResult = [];
-      } else {
-        searchResult =
-            dataAsetList.where((aset) {
-              final nameLower = aset.name.toLowerCase();
-              final searchLower = query.toLowerCase();
-
-              return nameLower.contains(searchLower);
-            }).toList();
-      }
-      notifyListeners();
-    });
+    if (query.length < 3) {
+      dataAsetResult = [];
+    } else {
+      dataAsetResult =
+          dataAsetList.where((aset) {
+            final nameLower = aset.name.toLowerCase();
+            final searchLower = query.toLowerCase();
+            return nameLower.contains(searchLower);
+          }).toList();
+    }
+    notifyListeners();
   }
 
   Future<void> createDataAset() async {
     final box = Hive.box<DataAsetModel>(HiveHelper.dataAsetBox);
     final String generatedId = 'DATAASET-${DateTime.now().millisecondsSinceEpoch}';
     final String imagePath = await FileHelper.saveImageToAppDirectory(imageFile!, 'DATA-ASET');
-    final String formattedDate = DateFormat('dd-MM-yyyy HH:mm:ss').format(DateTime.now());
     final DataAsetModel dataAset = DataAsetModel(
       id: generatedId,
       name: nameController.text,
-      createdAt: formattedDate,
+      location: locationController.text,
+      createdAt: DateTime.now(),
       image: imagePath,
     );
     await box.put(dataAset.id, dataAset);
-
-    // Refresh data
     await fetchDataAset();
   }
 
@@ -131,18 +102,70 @@ class DataAsetViewModel extends BaseViewModel {
     final box = Hive.box<DataAsetModel>(HiveHelper.dataAsetBox);
     final data = box.get(id);
 
-    // Hapus file jika ada
     if (data != null && data.image.isNotEmpty) {
-      final file = File(data.image);
-      if (await file.exists()) {
-        await file.delete();
+      final fileNameToDelete = path.basename(data.image);
+      final isUse = box.values.any(
+        (item) => item.id != data.id && path.basename(item.image) == fileNameToDelete,
+      );
+      if (!isUse) {
+        final dir = await FileHelper.getAppImageDirectory('DATA-ASET');
+        final file = File('${dir.path}/$fileNameToDelete');
+        if (await file.exists()) {
+          await file.delete();
+        }
       }
     }
-
-    // Hapus data dari Hive
     await box.delete(id);
-
-    // Refresh data
     await fetchDataAset();
+  }
+
+  Future<void> deleteAndRefreshData(String asetId) async {
+    final box = Hive.box<DataAsetModel>(HiveHelper.dataAsetBox);
+    final data = box.get(asetId);
+
+    if (data != null && data.image.isNotEmpty) {
+      final fileNameToDelete = path.basename(data.image);
+      final isUse = box.values.any(
+        (item) => item.id != data.id && path.basename(item.image) == fileNameToDelete,
+      );
+      if (!isUse) {
+        final dir = await FileHelper.getAppImageDirectory('DATA-ASET');
+        final file = File('${dir.path}/$fileNameToDelete');
+        if (await file.exists()) {
+          await file.delete();
+        }
+      }
+    }
+    await box.delete(asetId);
+    await fetchDataAset();
+    searchDataAset(searchController.text);
+  }
+
+  Future<void> updateDataAset(DataAsetModel aset, String name, String location) async {
+    final box = Hive.box<DataAsetModel>(HiveHelper.dataAsetBox);
+    final updatedAset = DataAsetModel(
+      id: aset.id,
+      name: name,
+      location: location,
+      image: imageFile?.path ?? aset.image,
+      createdAt: aset.createdAt,
+    );
+
+    await box.put(aset.id, updatedAset);
+    await fetchDataAset();
+  }
+
+  Future<void> updateAndRefreshData(DataAsetModel aset, String name, String location) async {
+    final box = Hive.box<DataAsetModel>(HiveHelper.dataAsetBox);
+    final updatedAset = DataAsetModel(
+      id: aset.id,
+      name: name,
+      location: location,
+      image: imageFile?.path ?? aset.image,
+      createdAt: aset.createdAt,
+    );
+    await box.put(aset.id, updatedAset);
+    await fetchDataAset();
+    searchDataAset(searchController.text);
   }
 }

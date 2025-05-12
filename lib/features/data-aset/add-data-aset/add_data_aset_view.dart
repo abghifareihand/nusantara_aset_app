@@ -40,7 +40,6 @@ class AddDataAsetView extends StatelessWidget {
           onChanged: (value) => model.updateName(value),
         ),
         const SizedBox(height: 16.0),
-
         CustomImage(
           label: 'Foto',
           imageFile: model.imageFile,
@@ -59,13 +58,21 @@ class AddDataAsetView extends StatelessWidget {
             );
           },
         ),
-        SizedBox(height: 24),
+        const SizedBox(height: 16.0),
+        CustomTextField(
+          controller: model.locationController,
+          label: 'Lokasi',
+          onChanged: (value) => model.updateLocation(value),
+        ),
+        const SizedBox(height: 24.0),
         CustomButton.filled(
           onPressed:
               model.isFormValid
-                  ? () {
-                    model.createDataAset();
-                    Navigator.pop(context);
+                  ? () async {
+                    final navigator = Navigator.of(context);
+                    await model.createDataAset();
+                    navigator.pop();
+                    await model.fetchDataAset();
                   }
                   : null,
           label: 'Simpan',

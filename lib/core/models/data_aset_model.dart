@@ -2,7 +2,7 @@ import 'package:hive/hive.dart';
 
 part 'data_aset_model.g.dart';
 
-@HiveType(typeId: 1)
+@HiveType(typeId: 3)
 class DataAsetModel {
   @HiveField(0)
   final String id;
@@ -11,19 +11,28 @@ class DataAsetModel {
   final String name;
 
   @HiveField(2)
-  final String image;
+  final String location;
 
   @HiveField(3)
-  final String createdAt;
+  final String image;
+
+  @HiveField(4)
+  final DateTime createdAt;
 
   DataAsetModel({
     required this.id,
     required this.name,
+    required this.location,
     required this.image,
     required this.createdAt,
   });
 
   Map<String, dynamic> toJson() {
-    return {'name': name, 'image': image, 'createdAt': createdAt};
+    return {
+      'name': name,
+      'location': location,
+      'image': image,
+      'createdAt': createdAt.toIso8601String(),
+    };
   }
 }

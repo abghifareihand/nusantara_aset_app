@@ -1,6 +1,4 @@
 import 'dart:developer';
-import 'dart:io';
-
 import 'package:nusantara_aset_app/core/base/base_view_model.dart';
 import 'package:permission_handler/permission_handler.dart';
 
@@ -8,14 +6,7 @@ class MainMenuViewModel extends BaseViewModel {
   @override
   Future<void> initModel() async {
     setLoading(true);
-    if (Platform.isAndroid) {
-      // Jika perangkat Android 11 (API 30) atau lebih tinggi
-      if (Platform.version.startsWith('10') || Platform.version.startsWith('11')) {
-        await requestManageExternalStoragePermission();
-      } else {
-        await requestStoragePermissions();
-      }
-    }
+    await requestManageExternalStoragePermission();
     setLoading(false);
   }
 
@@ -27,7 +18,7 @@ class MainMenuViewModel extends BaseViewModel {
       log('Storage permission denied');
     } else if (status.isPermanentlyDenied) {
       log('Storage permission permanently denied');
-      openAppSettings(); // Arahkan pengguna ke pengaturan aplikasi
+      openAppSettings();
     }
   }
 

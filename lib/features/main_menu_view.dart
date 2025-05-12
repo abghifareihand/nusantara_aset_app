@@ -2,7 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:nusantara_aset_app/core/base/base_view.dart';
 import 'package:nusantara_aset_app/core/constants/app_colors.dart';
 import 'package:nusantara_aset_app/features/data-aset/data_aset_view.dart';
+import 'package:nusantara_aset_app/features/export-data/export_data_view.dart';
+import 'package:nusantara_aset_app/features/kelola-tools/tools_view.dart';
 import 'package:nusantara_aset_app/features/main_menu_view_model.dart';
+import 'package:nusantara_aset_app/features/pinjam-barang/pinjam_barang_view.dart';
+import 'package:nusantara_aset_app/features/transaksi-barang/transaksi_barang_view.dart';
 
 class MainMenuView extends StatelessWidget {
   const MainMenuView({super.key});
@@ -47,7 +51,10 @@ class MainMenuView extends StatelessWidget {
                 title: 'Barang In/Out',
                 icon: Icons.swap_horiz,
                 onTap: () {
-                  /// assa
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => TransaksiBarangView()),
+                  );
                 },
               ),
             ],
@@ -60,7 +67,10 @@ class MainMenuView extends StatelessWidget {
                 title: 'Pinjam Barang',
                 icon: Icons.access_time,
                 onTap: () {
-                  /// assa
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => PinjamBarangView()),
+                  );
                 },
               ),
               const SizedBox(width: 40.0),
@@ -68,7 +78,7 @@ class MainMenuView extends StatelessWidget {
                 title: 'Tools',
                 icon: Icons.build,
                 onTap: () {
-                  /// assa
+                  Navigator.push(context, MaterialPageRoute(builder: (context) => ToolsView()));
                 },
               ),
             ],
@@ -78,7 +88,7 @@ class MainMenuView extends StatelessWidget {
             title: 'Export',
             icon: Icons.file_download,
             onTap: () {
-              /// assa
+              Navigator.push(context, MaterialPageRoute(builder: (context) => ExportDataView()));
             },
           ),
         ],
@@ -101,6 +111,7 @@ class MainMenuView extends StatelessWidget {
         decoration: BoxDecoration(
           color: AppColors.white,
           borderRadius: BorderRadius.circular(16),
+          border: Border.all(color: AppColors.primary),
           boxShadow: [
             BoxShadow(
               color: AppColors.black.withValues(alpha: 0.1),

@@ -1,6 +1,4 @@
-// ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'dart:io';
-
 import 'package:flutter/material.dart';
 
 class CustomImage extends StatelessWidget {
@@ -28,10 +26,54 @@ class CustomImage extends StatelessWidget {
             ),
             child:
                 imageFile == null
-                    ? const Icon(Icons.image, size: 50, color: Colors.grey)
-                    : ClipRRect(
-                      borderRadius: BorderRadius.circular(12),
-                      child: Image.file(imageFile!, fit: BoxFit.cover),
+                    ? const Center(
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Icon(Icons.image, size: 50, color: Colors.grey),
+                          SizedBox(height: 8),
+                          Text(
+                            'Pilih Foto',
+                            style: TextStyle(
+                              color: Colors.grey,
+                              fontSize: 16,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                        ],
+                      ),
+                    )
+                    : Stack(
+                      fit: StackFit.expand,
+                      children: [
+                        ClipRRect(
+                          borderRadius: BorderRadius.circular(12),
+                          child: Image.file(imageFile!, fit: BoxFit.cover),
+                        ),
+                        Container(
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(12),
+                            color: Colors.black.withValues(alpha: 0.3),
+                          ),
+                          child: Center(
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: const [
+                                Icon(Icons.image, size: 50, color: Colors.white),
+                                SizedBox(height: 8),
+                                Text(
+                                  'Ganti Foto',
+                                  style: TextStyle(
+                                    color: Colors.white,
+                                    fontSize: 16,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),
+                      ],
                     ),
           ),
         ),

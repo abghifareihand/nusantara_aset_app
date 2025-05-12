@@ -4,7 +4,9 @@ import 'package:nusantara_aset_app/core/constants/app_colors.dart';
 class CustomTextField extends StatelessWidget {
   final TextEditingController controller;
   final String label;
+  final FocusNode? focusNode;
   final Function(String value)? onChanged;
+  final Function(String value)? onSubmitted;
   final TextInputType? keyboardType;
   final TextInputAction textInputAction;
   final TextCapitalization capitalization;
@@ -12,14 +14,15 @@ class CustomTextField extends StatelessWidget {
   final Widget? prefixIcon;
   final Widget? suffixIcon;
   final bool readOnly;
-  final bool isOutlineBorder;
   final int maxLines;
 
   const CustomTextField({
     super.key,
     required this.controller,
     required this.label,
+    this.focusNode,
     this.onChanged,
+    this.onSubmitted,
     this.keyboardType,
     this.textInputAction = TextInputAction.next,
     this.capitalization = TextCapitalization.none,
@@ -27,7 +30,6 @@ class CustomTextField extends StatelessWidget {
     this.prefixIcon,
     this.suffixIcon,
     this.readOnly = false,
-    this.isOutlineBorder = true,
     this.maxLines = 1,
   });
 
@@ -44,6 +46,8 @@ class CustomTextField extends StatelessWidget {
           cursorColor: AppColors.primary,
           controller: controller,
           onChanged: onChanged,
+          onFieldSubmitted: onSubmitted,
+          focusNode: focusNode,
           keyboardType: keyboardType,
           textInputAction: textInputAction,
           textCapitalization: capitalization,
@@ -58,27 +62,18 @@ class CustomTextField extends StatelessWidget {
             ),
             prefixIcon: prefixIcon,
             suffixIcon: suffixIcon,
-            border:
-                isOutlineBorder
-                    ? OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(12.0),
-                      borderSide: const BorderSide(color: Colors.grey),
-                    )
-                    : null,
-            enabledBorder:
-                isOutlineBorder
-                    ? OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(12.0),
-                      borderSide: const BorderSide(color: Colors.grey),
-                    )
-                    : null,
-            focusedBorder:
-                isOutlineBorder
-                    ? OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(12.0),
-                      borderSide: const BorderSide(color: AppColors.primary, width: 1.8),
-                    )
-                    : null,
+            border: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(12.0),
+              borderSide: const BorderSide(color: Colors.grey),
+            ),
+            enabledBorder: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(12.0),
+              borderSide: const BorderSide(color: Colors.grey),
+            ),
+            focusedBorder: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(12.0),
+              borderSide: const BorderSide(color: AppColors.primary, width: 1.8),
+            ),
             contentPadding: const EdgeInsets.all(16),
           ),
         ),

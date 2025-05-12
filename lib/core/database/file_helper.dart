@@ -15,4 +15,13 @@ class FileHelper {
     final newImageFile = await imageFile.copy(newImagePath);
     return newImageFile.path;
   }
+
+  static Future<Directory> getAppImageDirectory(String folderName) async {
+    final dir = await getApplicationDocumentsDirectory();
+    final imageDir = Directory('${dir.path}/images/$folderName');
+    if (!await imageDir.exists()) {
+      await imageDir.create(recursive: true);
+    }
+    return imageDir;
+  }
 }

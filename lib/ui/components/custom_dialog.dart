@@ -21,18 +21,20 @@ class CustomDialogDelete extends StatelessWidget {
       child: Padding(
         padding: const EdgeInsets.all(20.0),
         child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
           mainAxisSize: MainAxisSize.min,
           children: [
             Text(
-              'Hapus',
-              style: TextStyle(fontWeight: FontWeight.w700, fontSize: 18, color: AppColors.black),
+              'Hapus Data',
+              style: TextStyle(fontWeight: FontWeight.w700, fontSize: 16, color: AppColors.black),
             ),
             const SizedBox(height: 12.0),
             Text(
-              'Apakah kamu yakin ingin menghapus $title ini?',
+              'Apakah anda yakin untuk menghapus $title ini?',
               style: TextStyle(fontWeight: FontWeight.w500, fontSize: 14, color: AppColors.dark),
+              textAlign: TextAlign.center,
             ),
-            const SizedBox(height: 20.0),
+            const SizedBox(height: 24.0),
             Row(
               children: [
                 Expanded(
