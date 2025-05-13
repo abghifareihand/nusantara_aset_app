@@ -7,6 +7,7 @@ import 'package:nusantara_aset_app/features/kelola-tools/tools_view.dart';
 import 'package:nusantara_aset_app/features/main_menu_view_model.dart';
 import 'package:nusantara_aset_app/features/pinjam-barang/pinjam_barang_view.dart';
 import 'package:nusantara_aset_app/features/transaksi-barang/transaksi_barang_view.dart';
+import 'package:nusantara_aset_app/ui/components/custom_appbar.dart';
 
 class MainMenuView extends StatelessWidget {
   const MainMenuView({super.key});
@@ -20,11 +21,7 @@ class MainMenuView extends StatelessWidget {
       builder: (BuildContext context, MainMenuViewModel model, _) {
         return Scaffold(
           backgroundColor: Colors.white,
-          appBar: AppBar(
-            title: const Text('Nusantara Aset'),
-            backgroundColor: AppColors.primary,
-            elevation: 2,
-          ),
+          appBar: CustomAppBar(showBackButton: false),
           body: _buildBody(context, model),
         );
       },

@@ -82,6 +82,7 @@ class SearchDataAsetView extends StatelessWidget {
             itemBuilder: (BuildContext context, int index) {
               final aset = model.dataAsetResult[index];
               return ItemCardAset(
+                index: index,
                 data: aset,
                 onTap: () {
                   Navigator.push(

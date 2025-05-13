@@ -68,6 +68,7 @@ class DataAsetView extends StatelessWidget {
         itemBuilder: (BuildContext context, int index) {
           final aset = model.dataAsetList[index];
           return ItemCardAset(
+            index: index,
             data: aset,
             onTap: () {
               Navigator.push(

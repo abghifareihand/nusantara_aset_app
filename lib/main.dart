@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:nusantara_aset_app/core/database/hive_helper.dart';
-import 'package:nusantara_aset_app/features/main_menu_view.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:nusantara_aset_app/features/splash_view.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -24,7 +24,7 @@ class MyApp extends StatelessWidget {
       ],
       supportedLocales: [Locale('id')],
       theme: ThemeData(useMaterial3: false),
-      home: MainMenuView(),
+      home: SplashView(),
     );
   }
 }

@@ -30,12 +30,21 @@ class ExportHelper {
       await _addSheetWithImage<DataAsetModel>(
         workbook: workbook,
         sheetName: 'DataAset',
-        headers: ['ID', 'Nama', 'Lokasi', 'Tanggal'],
+        headers: ['NO', 'Nama', 'Lokasi', 'Tanggal'],
         items: box.values.toList(),
         rowMapper:
             (list) =>
                 list
-                    .map((e) => [e.id, e.name, e.location, e.createdAt.toDateTimeFormatString()])
+                    .asMap()
+                    .entries
+                    .map(
+                      (entry) => [
+                        (entry.key + 1).toString(),
+                        entry.value.name,
+                        entry.value.location,
+                        entry.value.createdAt.toDateTimeFormatString(),
+                      ],
+                    )
                     .toList(),
         imagePathGetter: (e) => e.image,
         imageHeaderName: 'Foto Aset',
@@ -63,18 +72,20 @@ class ExportHelper {
       await _addSheetWithImage<BarangMasukModel>(
         workbook: workbook,
         sheetName: 'BarangMasuk',
-        headers: ['ID', 'Pengirim', 'Penerima', 'Keterangan', 'Tanggal'],
+        headers: ['NO', 'Pengirim', 'Penerima', 'Keterangan', 'Tanggal'],
         items: box.values.toList(),
         rowMapper:
             (list) =>
                 list
+                    .asMap()
+                    .entries
                     .map(
-                      (e) => [
-                        e.id,
-                        e.pengirim,
-                        e.penerima,
-                        e.keterangan,
-                        e.createdAt.toDateTimeFormatString(),
+                      (entry) => [
+                        (entry.key + 1).toString(),
+                        entry.value.pengirim,
+                        entry.value.penerima,
+                        entry.value.keterangan,
+                        entry.value.createdAt.toDateTimeFormatString(),
                       ],
                     )
                     .toList(),
@@ -104,18 +115,20 @@ class ExportHelper {
       await _addSheetWithImage<BarangKeluarModel>(
         workbook: workbook,
         sheetName: 'BarangKeluar',
-        headers: ['ID', 'Pengirim', 'Tujuan', 'Keterangan', 'Tanggal'],
+        headers: ['NO', 'Pengirim', 'Tujuan', 'Keterangan', 'Tanggal'],
         items: box.values.toList(),
         rowMapper:
             (list) =>
                 list
+                    .asMap()
+                    .entries
                     .map(
-                      (e) => [
-                        e.id,
-                        e.pengirim,
-                        e.tujuan,
-                        e.keterangan,
-                        e.createdAt.toDateTimeFormatString(),
+                      (entry) => [
+                        (entry.key + 1).toString(),
+                        entry.value.pengirim,
+                        entry.value.tujuan,
+                        entry.value.keterangan,
+                        entry.value.createdAt.toDateTimeFormatString(),
                       ],
                     )
                     .toList(),
@@ -152,7 +165,7 @@ class ExportHelper {
         workbook: workbook,
         sheetName: 'PinjamBarang',
         headers: [
-          'ID',
+          'NO',
           'Peminjam',
           'Penanggung Jawab',
           'Keterangan',
@@ -163,14 +176,16 @@ class ExportHelper {
         rowMapper:
             (list) =>
                 list
+                    .asMap()
+                    .entries
                     .map(
-                      (e) => [
-                        e.id,
-                        e.peminjam,
-                        e.penanggungJawab,
-                        e.keterangan,
-                        e.tanggalPeminjaman.toDateTimeFormatString(),
-                        e.tanggalKembalikan?.toDateTimeFormatString() ?? '',
+                      (entry) => [
+                        (entry.key + 1).toString(),
+                        entry.value.peminjam,
+                        entry.value.penanggungJawab,
+                        entry.value.keterangan,
+                        entry.value.tanggalPeminjaman.toDateTimeFormatString(),
+                        entry.value.tanggalKembalikan?.toDateTimeFormatString() ?? '',
                       ],
                     )
                     .toList(),
@@ -192,8 +207,10 @@ class ExportHelper {
     required Function(String) onSuccess,
   }) async {
     try {
-      final box = Hive.box<ListToolsModel>(HiveHelper.toolsBox);
-      if (box.isEmpty) {
+      final box = Hive.box<ToolsModel>(HiveHelper.toolsBox);
+      final allListTools = box.values.expand((tools) => tools.listTools).toList();
+
+      if (allListTools.isEmpty) {
         onError('Belum ada tools untuk diexport');
         return;
       }
@@ -202,12 +219,21 @@ class ExportHelper {
       await _addSheetWithImage<ListToolsModel>(
         workbook: workbook,
         sheetName: 'DataAset',
-        headers: ['ID', 'Nama', 'Kondisi', 'Tanggal'],
-        items: box.values.toList(),
+        headers: ['NO', 'Nama', 'Kondisi', 'Tanggal'],
+        items: allListTools,
         rowMapper:
             (list) =>
                 list
-                    .map((e) => [e.id, e.name, e.condition, e.createdAt.toDateTimeFormatString()])
+                    .asMap()
+                    .entries
+                    .map(
+                      (entry) => [
+                        (entry.key + 1).toString(),
+                        entry.value.name,
+                        entry.value.condition,
+                        entry.value.createdAt.toDateTimeFormatString(),
+                      ],
+                    )
                     .toList(),
         imagePathGetter: (e) => e.image,
         imageHeaderName: 'Foto Tools',

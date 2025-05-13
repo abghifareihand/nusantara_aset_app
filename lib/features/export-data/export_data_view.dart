@@ -3,7 +3,6 @@ import 'package:nusantara_aset_app/core/base/base_view.dart';
 import 'package:nusantara_aset_app/core/constants/app_colors.dart';
 import 'package:nusantara_aset_app/core/database/export_helper.dart';
 import 'package:nusantara_aset_app/features/export-data/export_data_view_model.dart';
-import 'package:nusantara_aset_app/ui/components/custom_button.dart';
 
 class ExportDataView extends StatelessWidget {
   const ExportDataView({super.key});
@@ -121,34 +120,6 @@ class ExportDataView extends StatelessWidget {
             );
           },
         ),
-
-        // ElevatedButton.icon(
-        //   onPressed: () async {
-        //     await model.exportBarangMasuk();
-        //     if (!context.mounted) return;
-        //     _showDone(context, 'Barang Masuk');
-        //   },
-        //   icon: Icon(Icons.file_download),
-        //   label: Text('Export Barang Masuk'),
-        // ),
-        // ElevatedButton.icon(
-        //   onPressed: () async {
-        //     await model.exportBarangKeluar();
-        //     if (!context.mounted) return;
-        //     _showDone(context, 'Barang Keluar');
-        //   },
-        //   icon: Icon(Icons.file_download),
-        //   label: Text('Export Barang Keluar'),
-        // ),
-        // ElevatedButton.icon(
-        //   onPressed: () async {
-        //     await model.exportPinjamBarang();
-        //     if (!context.mounted) return;
-        //     _showDone(context, 'Pinjam Barang');
-        //   },
-        //   icon: Icon(Icons.file_download),
-        //   label: Text('Export Pinjam Barang'),
-        // ),
       ],
     );
   }

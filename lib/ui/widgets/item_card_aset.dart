@@ -10,7 +10,15 @@ class ItemCardAset extends StatelessWidget {
   final Function()? onTap;
   final Function()? onDelete;
   final Function()? onEdit;
-  const ItemCardAset({super.key, required this.data, this.onTap, this.onDelete, this.onEdit});
+  final int index; // Menambahkan index
+  const ItemCardAset({
+    super.key,
+    required this.data,
+    this.onTap,
+    this.onDelete,
+    this.onEdit,
+    required this.index, // Pastikan index diterima di konstruktor
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -18,14 +26,37 @@ class ItemCardAset extends StatelessWidget {
       borderRadius: BorderRadius.circular(12),
       onTap: onTap,
       child: Container(
-        padding: EdgeInsets.all(16),
+        padding: EdgeInsets.all(12),
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(12),
           border: Border.all(color: AppColors.grey),
         ),
         child: Row(
-          crossAxisAlignment: CrossAxisAlignment.center,
           children: [
+            Container(
+              width: 32,
+              height: 32,
+              decoration: BoxDecoration(
+                shape: BoxShape.circle,
+                gradient: LinearGradient(
+                  begin: Alignment.topLeft,
+                  end: Alignment.bottomRight,
+                  colors: [AppColors.secondary, AppColors.primary],
+                  stops: [0.0, 1.0],
+                ),
+              ),
+              child: Center(
+                child: Text(
+                  (index + 1).toString(), // Menampilkan angka berdasarkan index
+                  style: TextStyle(
+                    color: AppColors.white,
+                    fontWeight: FontWeight.bold,
+                    fontSize: 14,
+                  ),
+                ),
+              ),
+            ),
+            SizedBox(width: 12),
             ClipRRect(
               borderRadius: BorderRadius.circular(8),
               child: ImageHelper.loadLocalImage(data.image),

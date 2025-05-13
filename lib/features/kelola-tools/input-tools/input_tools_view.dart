@@ -25,7 +25,6 @@ class InputToolsView extends StatelessWidget {
             elevation: 2,
           ),
           body: _buildBody(context, model),
-          bottomSheet: _buildBottomSheet(context, model),
         );
       },
     );
@@ -127,28 +126,22 @@ class InputToolsView extends StatelessWidget {
             ],
           ],
         ),
-      ],
-    );
-  }
 
-  Widget _buildBottomSheet(BuildContext context, ToolsViewModel model) {
-    return Container(
-      padding: const EdgeInsets.all(16.0),
-      width: double.infinity,
-      decoration: const BoxDecoration(color: Colors.white),
-      child: CustomButton.filled(
-        onPressed:
-            model.isFormValid
-                ? () {
-                  model.createTools();
-                  Navigator.pop(context);
-                }
-                : null,
-        label: 'Simpan',
-        fontSize: 14,
-        height: 48,
-        borderRadius: 12,
-      ),
+        const SizedBox(height: 24.0),
+        CustomButton.filled(
+          onPressed:
+              model.isFormValid
+                  ? () {
+                    model.createTools();
+                    Navigator.pop(context);
+                  }
+                  : null,
+          label: 'Simpan',
+          fontSize: 14,
+          height: 48,
+          borderRadius: 12,
+        ),
+      ],
     );
   }
 }
