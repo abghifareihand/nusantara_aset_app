@@ -6,9 +6,7 @@ import 'package:intl/intl.dart';
 import 'package:nusantara_aset_app/core/database/hive_helper.dart';
 import 'package:nusantara_aset_app/core/models/tools_model.dart';
 import 'package:nusantara_aset_app/ui/utils/extensions.dart';
-// import 'package:path_provider/path_provider.dart';
 import 'package:syncfusion_flutter_xlsio/xlsio.dart';
-
 import '../models/barang_keluar_model.dart';
 import '../models/barang_masuk_model.dart';
 import '../models/data_aset_model.dart';
@@ -410,21 +408,6 @@ class ExportHelper {
     cell.cellStyle.borders.right.lineStyle = LineStyle.thin;
     cell.cellStyle.borders.right.color = '#000000';
   }
-
-  // ✅ Fungsi menyimpan file
-  // static Future<void> _saveWorkbook(Workbook workbook, String prefix) async {
-  //   final bytes = workbook.saveAsStream();
-  //   workbook.dispose();
-
-  //   final now = DateTime.now().toLocal();
-  //   final fileName = '${prefix}_${DateFormat('ddMMyyHHmmss').format(now)}.xlsx';
-
-  //   final dir = await getExternalStorageDirectory() ?? await getApplicationDocumentsDirectory();
-  //   final file = File('${dir.path}/$fileName');
-  //   await file.writeAsBytes(bytes, flush: true);
-
-  //   print.log('Excel exported: ${file.path}');
-  // }
 
   static Future<void> _saveWorkbook(Workbook workbook, String prefix) async {
     final bytes = workbook.saveAsStream();
