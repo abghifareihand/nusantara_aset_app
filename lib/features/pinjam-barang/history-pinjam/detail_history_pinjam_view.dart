@@ -35,16 +35,13 @@ class DetailHistoryPinjamView extends StatelessWidget {
     final tanggalPeminjaman = pinjamBarang.tanggalPeminjaman;
     final tanggalKembalikan = pinjamBarang.tanggalKembalikan;
     String durasiPeminjaman = '';
+
     if (tanggalKembalikan != null) {
       final duration = tanggalKembalikan.difference(tanggalPeminjaman);
       final days = duration.inDays;
       final hours = duration.inHours % 24;
       final minutes = duration.inMinutes % 60;
-      if (days > 0 || hours > 0) {
-        durasiPeminjaman = '$days hari $hours jam';
-      } else {
-        durasiPeminjaman = '$hours jam $minutes menit';
-      }
+      durasiPeminjaman = '$days hari $hours jam $minutes menit';
     }
 
     return ListView(
@@ -64,7 +61,11 @@ class DetailHistoryPinjamView extends StatelessWidget {
             ),
             Text(
               pinjamBarang.tanggalPeminjaman.toDateTimeFormatString(),
-              style: const TextStyle(fontSize: 14, fontWeight: FontWeight.w600),
+              style: const TextStyle(
+                fontSize: 14,
+                fontWeight: FontWeight.w500,
+                color: AppColors.dark,
+              ),
             ),
           ],
         ),
@@ -93,7 +94,11 @@ class DetailHistoryPinjamView extends StatelessWidget {
             ),
             Text(
               pinjamBarang.tanggalKembalikan!.toDateTimeFormatString(),
-              style: const TextStyle(fontSize: 14, fontWeight: FontWeight.w600),
+              style: const TextStyle(
+                fontSize: 14,
+                fontWeight: FontWeight.w500,
+                color: AppColors.dark,
+              ),
             ),
           ],
         ),
@@ -108,6 +113,43 @@ class DetailHistoryPinjamView extends StatelessWidget {
           ),
         ),
         const SizedBox(height: 16.0),
+        Text('Keterangan', style: const TextStyle(fontSize: 16, fontWeight: FontWeight.w600)),
+        Text(
+          pinjamBarang.keterangan,
+          style: const TextStyle(fontSize: 14, fontWeight: FontWeight.w500, color: AppColors.dark),
+        ),
+        const SizedBox(height: 16.0),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Text('Peminjam', style: const TextStyle(fontSize: 16, fontWeight: FontWeight.w600)),
+            Text(
+              pinjamBarang.peminjam,
+              style: const TextStyle(
+                fontSize: 14,
+                fontWeight: FontWeight.w500,
+                color: AppColors.dark,
+              ),
+            ),
+          ],
+        ),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Text(
+              'Penanggung Jawab',
+              style: const TextStyle(fontSize: 16, fontWeight: FontWeight.w600),
+            ),
+            Text(
+              pinjamBarang.penanggungJawab,
+              style: const TextStyle(
+                fontSize: 14,
+                fontWeight: FontWeight.w500,
+                color: AppColors.dark,
+              ),
+            ),
+          ],
+        ),
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
@@ -117,7 +159,11 @@ class DetailHistoryPinjamView extends StatelessWidget {
             ),
             Text(
               durasiPeminjaman.isNotEmpty ? durasiPeminjaman : 'Durasi tidak tersedia',
-              style: const TextStyle(fontSize: 14, fontWeight: FontWeight.w600),
+              style: const TextStyle(
+                fontSize: 14,
+                fontWeight: FontWeight.w500,
+                color: AppColors.dark,
+              ),
             ),
           ],
         ),
