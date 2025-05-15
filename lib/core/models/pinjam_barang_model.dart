@@ -28,6 +28,9 @@ class PinjamBarangModel {
   @HiveField(7)
   final String keterangan;
 
+  @HiveField(8)
+  final String? durasi;
+
   PinjamBarangModel({
     required this.id,
     required this.peminjam,
@@ -37,6 +40,7 @@ class PinjamBarangModel {
     this.imageKembalikan,
     this.tanggalKembalikan,
     required this.keterangan,
+    this.durasi,
   });
 
   Map<String, dynamic> toJson() {
@@ -49,6 +53,7 @@ class PinjamBarangModel {
       'imageKembalikan': imageKembalikan,
       'tanggalKembalikan': tanggalKembalikan?.toIso8601String(),
       'keterangan': keterangan,
+      'durasi': durasi,
     };
   }
 }

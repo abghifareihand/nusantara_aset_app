@@ -32,18 +32,6 @@ class DetailHistoryPinjamView extends StatelessWidget {
   }
 
   Widget _buildBody(BuildContext context, PinjamBarangModel pinjamBarang) {
-    final tanggalPeminjaman = pinjamBarang.tanggalPeminjaman;
-    final tanggalKembalikan = pinjamBarang.tanggalKembalikan;
-    String durasiPeminjaman = '';
-
-    if (tanggalKembalikan != null) {
-      final duration = tanggalKembalikan.difference(tanggalPeminjaman);
-      final days = duration.inDays;
-      final hours = duration.inHours % 24;
-      final minutes = duration.inMinutes % 60;
-      durasiPeminjaman = '$days hari $hours jam $minutes menit';
-    }
-
     return ListView(
       padding: const EdgeInsets.all(16.0),
       children: [
@@ -158,7 +146,7 @@ class DetailHistoryPinjamView extends StatelessWidget {
               style: const TextStyle(fontSize: 16, fontWeight: FontWeight.w600),
             ),
             Text(
-              durasiPeminjaman.isNotEmpty ? durasiPeminjaman : 'Durasi tidak tersedia',
+              pinjamBarang.durasi ?? '',
               style: const TextStyle(
                 fontSize: 14,
                 fontWeight: FontWeight.w500,

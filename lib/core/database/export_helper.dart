@@ -169,6 +169,7 @@ class ExportHelper {
           'Keterangan',
           'Tanggal Peminjaman',
           'Tanggal Pengembalian',
+          'Durasi Peminjaman',
         ],
         items: box.values.toList(),
         rowMapper:
@@ -184,6 +185,7 @@ class ExportHelper {
                         entry.value.keterangan,
                         entry.value.tanggalPeminjaman.toDateTimeFormatString(),
                         entry.value.tanggalKembalikan?.toDateTimeFormatString() ?? '',
+                        entry.value.durasi ?? '',
                       ],
                     )
                     .toList(),
@@ -417,7 +419,7 @@ class ExportHelper {
     final fileName = '${prefix}_${DateFormat('ddMMyyHHmmss').format(now)}.xlsx';
 
     // Tentukan folder utama
-    final mainDirectory = Directory('/storage/emulated/0/NUSANTARA_ASET');
+    final mainDirectory = Directory('/storage/emulated/0/NUSET');
 
     // Pastikan folder utama ada
     if (!await mainDirectory.exists()) {

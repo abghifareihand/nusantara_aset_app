@@ -144,6 +144,18 @@ class PinjamBarangViewModel extends BaseViewModel {
         'PINJAM-BARANG',
       );
 
+      // Konversi tanggal pengembalian dari controller
+      final tanggalKembalikan = datetimeKembalikanController.text.toParsedDateTime();
+      final tanggalPeminjaman = data.tanggalPeminjaman;
+
+      // Hitung durasi peminjaman
+      String durasiPeminjaman = '';
+      final duration = tanggalKembalikan.difference(tanggalPeminjaman);
+      final days = duration.inDays;
+      final hours = duration.inHours % 24;
+      final minutes = duration.inMinutes % 60;
+      durasiPeminjaman = '$days hari $hours jam $minutes menit';
+
       // Buat data baru dengan image dan tanggal pengembalian
       final updated = PinjamBarangModel(
         id: data.id,
@@ -154,6 +166,7 @@ class PinjamBarangViewModel extends BaseViewModel {
         imageKembalikan: imagePath,
         tanggalKembalikan: datetimeKembalikanController.text.toParsedDateTime(),
         keterangan: data.keterangan,
+        durasi: durasiPeminjaman,
       );
 
       await box.put(id, updated);

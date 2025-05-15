@@ -25,13 +25,14 @@ class PinjamBarangModelAdapter extends TypeAdapter<PinjamBarangModel> {
       imageKembalikan: fields[5] as String?,
       tanggalKembalikan: fields[6] as DateTime?,
       keterangan: fields[7] as String,
+      durasi: fields[8] as String?,
     );
   }
 
   @override
   void write(BinaryWriter writer, PinjamBarangModel obj) {
     writer
-      ..writeByte(8)
+      ..writeByte(9)
       ..writeByte(0)
       ..write(obj.id)
       ..writeByte(1)
@@ -47,7 +48,9 @@ class PinjamBarangModelAdapter extends TypeAdapter<PinjamBarangModel> {
       ..writeByte(6)
       ..write(obj.tanggalKembalikan)
       ..writeByte(7)
-      ..write(obj.keterangan);
+      ..write(obj.keterangan)
+      ..writeByte(8)
+      ..write(obj.durasi);
   }
 
   @override
